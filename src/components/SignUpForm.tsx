@@ -30,12 +30,11 @@ export default function SignUpForm() {
     const [error, setError] = useState("");
     const nav = useNavigate();
     const { user, setUser } = useContext<any>(UserContext);
-    console.log(user, "user")
     const handleSubmit = (event: React.SyntheticEvent) => {
 
         event.preventDefault();
         const auth = getAuth(app);
- 
+
         createUserWithEmailAndPassword(auth, emailSignUp, passwordSignUp)
         .then(({ user }: any ) => {
             const { uid } = user;

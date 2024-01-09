@@ -43,7 +43,6 @@ export const postStudentSubject = (student_id: string, subject_name: string) => 
 
 export const getStudentSubjects = (student_id: string) => {
     return studentsAPI.get(`/${student_id}/subjects`).then((response) => {
-        console.log(response.data.subjects, "subjects in ap")
         return response.data.subjects;
     })
 }
