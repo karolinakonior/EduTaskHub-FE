@@ -16,18 +16,14 @@ export default function SubjectForm({setStudentSubjects, studentSubjects}: {setS
 
     useEffect(() => {
         getSubjects().then((subjects: any) => {
-            console.log(subjects, "subjects in form")
             setSubjects(subjects);
         })
       }, []);
     
     const handleChange = (event: SelectChangeEvent) => {
-        console.log(event.target.value.toString())
         return postStudentSubject(user.student_id, event.target.value.toString())
         .then((subject: any) => {
             setStudentSubjects([...studentSubjects, {subject_id: subject.subject_id, subject_name: event.target.value }])
-
-            
         })
     };
 
