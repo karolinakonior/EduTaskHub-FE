@@ -35,10 +35,6 @@ function ResponsiveAppBar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   const links = [
     {
     text: "Student",
@@ -155,14 +151,12 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {!user.account_type ?
-      
                   <Link to="/login" style={{ textDecoration: 'none' }}>
                     <Typography
                     sx={{ my: 2, color: 'white', display: 'block' }}
                     >Sign in
                     </Typography>
                   </Link>
-               
                 : 
                 <Button onClick={() => {
                   setUser({})
