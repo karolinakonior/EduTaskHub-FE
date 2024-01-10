@@ -16,6 +16,7 @@ import { UserContext } from "../context/UserContext";
 import { Link } from 'react-router-dom';
 import { getStudent } from "../utils/users_api";
 import { useNavigate } from "react-router-dom";
+import { User } from '../types/User';
 
 const defaultTheme = createTheme();
 
@@ -37,7 +38,7 @@ export default function SignIn() {
       const { uid } = user;
       return getStudent(uid)
     })
-    .then((student: any) => {
+    .then((student: User) => {
       setUser(student);
       nav(`/dashboard`);
     })

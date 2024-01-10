@@ -34,7 +34,7 @@ export default function YearForm({setYear, year}: {setYear: React.Dispatch<React
         <Select
           labelId="select-year-dropdown"
           id="select-year-dropdown"
-          value={year.toString()}
+          value=""
           label="Year"
           onChange={handleChange}
         >

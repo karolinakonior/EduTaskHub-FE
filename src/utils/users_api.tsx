@@ -46,3 +46,15 @@ export const getStudentSubjects = (student_id: string) => {
         return response.data.subjects;
     })
 }
+
+export const getStudentAssignments = (student_id: string) => {
+    return studentsAPI.get(`/${student_id}/assignments`).then((response) => {
+        return response.data.assignments;
+    })
+}
+
+export const getStudentSubmissions = (student_id: string) => {
+    return studentsAPI.get(`/${student_id}/submissions`).then((response) => {
+        return response.data.submissions;
+    })
+}
