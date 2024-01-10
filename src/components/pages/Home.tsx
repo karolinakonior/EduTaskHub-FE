@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ListItem from '@mui/material/ListItem';
 import List from '@mui/material/List';
 import Copyright from '../Copyright';
+import Divider from '@mui/material/Divider';
 
 const defaultTheme = createTheme();
 
@@ -43,7 +44,8 @@ export default function Home() {
                 <Typography component="h2" variant="h6" sx={{fontWeight: 'bold'}}>
                     EduTaskHub is an open-source educational platform designed to simplify the process of distributing and marking coursework assignments for students and teachers. This platform aims to improve the efficiency of homework management and enhance collaboration within an educational environment.
                 </Typography>
-                <Typography component="h3" variant="body1" sx={{ mt: 3, mb: 2 }}>
+                <Typography component="h3" variant="body1" sx={{ mt: 1, mb: 1 }}>
+                  <Divider sx={{ mb: 2 }} />
                     <Typography >
                         Features:
                     </Typography>

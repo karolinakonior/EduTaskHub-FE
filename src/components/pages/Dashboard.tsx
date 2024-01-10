@@ -14,9 +14,12 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { UserContext } from "../../context/UserContext";
 import { useContext, useState, useEffect } from 'react';
 import YearForm from '../YearForm';
-import { getStudentYear, getStudentSubjects } from '../../utils/users_api';
+import { getStudentYear, getStudentSubjects, getStudentAssignments } from '../../utils/users_api';
 import SubjectForm from '../SubjectForm';
 import Copyright from '../Copyright';
+import Assignments from '../Assignments';
+import Submissions from '../Submissions';
+import { Subject } from '../../types/Subject';
 
 const drawerWidth: number = 240;
 
@@ -53,6 +56,7 @@ export default function Dashboard() {
     const [open, setOpen] = React.useState(true);
     const [year, setYear] = useState(0);
     const [studentSubjects, setStudentSubjects] = useState([]);
+    const [studentAssignments, setStudentAssignments] = useState([]);
     const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -70,19 +74,23 @@ export default function Dashboard() {
         setStudentSubjects(subjects)
       })
     })
+    .then(() => {
+      getStudentAssignments(user.student_id).then((assignments) => {
+        setStudentAssignments(assignments)
+      })
+    })
   }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: "flex" }}>
         <CssBaseline />
-      
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
               px: [1],
             }}
           >
@@ -96,57 +104,75 @@ export default function Dashboard() {
           component="main"
           sx={{
             backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
+              theme.palette.mode === "light"
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
+            height: "100vh",
+            overflow: "auto",
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" >
+          <Container maxWidth="lg">
             <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
+              <Grid item xs={12} md={6} lg={6}>
                 <Paper
                   sx={{
                     p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 'auto',
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "auto",
                   }}
                 >
-             <Typography>Welcome back {user.first_name}!</Typography>
-             {year === 0 ? <YearForm setYear={setYear} year={year}/> : <Typography>You are attending Year {year}.</Typography>}
-             <Typography>Your subjects:</Typography>
-              <ul>
-                {studentSubjects.map((subject: any) => {
-                  return (
-                    <li>{subject.subject_name}</li>
-                  )
-                })}
-                </ul>
-             <SubjectForm setStudentSubjects={setStudentSubjects} studentSubjects={studentSubjects}/>
+                  <Typography variant="h3">
+                    Welcome back {user.first_name}!
+                  </Typography>
+                  <Divider sx={{ mb: 2 }} />
+                  {year === 0 ? (
+                    <YearForm setYear={setYear} year={year} />
+                  ) : (
+                    <Typography variant="h5" sx={{ mb: 2 }}>
+                      You are attending Year {year}.
+                    </Typography>
+                  )}
+                  <Typography variant="h6"sx={{ mt: 2 }}>Your subjects:</Typography>
+                  <ul>
+                    {studentSubjects.map((subject: Subject) => {
+                      return <li key={subject.subject_id}>{subject.subject_name}</li>;
+                    })}
+                  </ul>
+                  <SubjectForm
+                    setStudentSubjects={setStudentSubjects}
+                    studentSubjects={studentSubjects}
+                  />
+                </Paper>
+                <Paper
+                  sx={{ p: 2, display: "grid", flexDirection: "row", mt: 1.5 }}
+                >
+                  <Typography variant="h5" sx={{ mb: 2 }}>
+                    Past submissions:
+                  </Typography>
+                  <Divider sx={{ mb: 2 }} />
+                  <Submissions />
                 </Paper>
               </Grid>
-              
-              <Grid item xs={12} md={4} lg={3}>
+              <Grid item xs={12} md={6} lg={6}>
                 <Paper
                   sx={{
                     p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "auto",
                   }}
                 >
-                 <p>Under construction</p>
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  
+                  <Typography variant="h5" sx={{ mb: 2 }}>
+                    Outstanding assignments:
+                  </Typography>
+                  <Divider sx={{ mb: 2 }} />
+                  <Assignments
+                    studentAssignments={studentAssignments}
+                    setStudentAssignments={setStudentAssignments}
+                  />
                 </Paper>
               </Grid>
             </Grid>
