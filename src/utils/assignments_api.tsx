@@ -10,3 +10,9 @@ export const getAssignments = () => {
         return response.data.assignments;
     })
 }
+
+export const getSingleAssignment = (assignment_id: any) => {
+    return assignmentsAPI.get(`/${assignment_id}`).then((response) => {
+        return response.data.assignment;
+    })
+}

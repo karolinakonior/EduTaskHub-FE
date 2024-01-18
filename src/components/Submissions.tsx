@@ -23,11 +23,10 @@ export default function Submissions() {
     return (
       <>
         {submissions.length === 0 ? (
-          <Typography variant="h5" component="div" gutterBottom>
-            You have no submissions.
+          <Typography variant="h6" component="div" gutterBottom>
+            You have no submissions yet.
           </Typography>
-        ) : null}
-
+        ) : 
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
             <Typography
@@ -46,6 +45,7 @@ export default function Submissions() {
             <Button size="small">Learn More</Button>
           </CardActions>
         </Card>
+}
       </>
     );
 }
