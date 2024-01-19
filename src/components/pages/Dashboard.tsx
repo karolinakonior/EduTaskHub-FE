@@ -73,8 +73,8 @@ export default function Dashboard() {
     })
     .then(() => {
       getStudentSubjects(user.student_id).then((subjects) => {
-        setStudentSubjects(subjects)
-      })
+        setStudentSubjects(subjects);
+      });
     })
     .then(() => {
       getStudentAssignments(user.student_id).then((assignments) => {

@@ -10,10 +10,12 @@ import { UserContext } from "../context/UserContext";
 import { useContext } from 'react';
 import React from 'react';
 import Typography from '@mui/material/Typography';
+import Loader from "./Loader";
 
 export default function YearForm({setYear, year}: {setYear: React.Dispatch<React.SetStateAction<number>>, year: number}) {
   const [years, setYears] = useState([]);
   const { user, setUser } = useContext<any>(UserContext);
+  const [loading, setLoading] = useState<boolean>(true);
   console.log(user, "in year")
   
   const handleChange = (event: SelectChangeEvent) => {
@@ -28,6 +30,21 @@ export default function YearForm({setYear, year}: {setYear: React.Dispatch<React
       setYears(years);
     })
   }, []);
+
+  if(loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <Box sx={{ minWidth: 120 }}>

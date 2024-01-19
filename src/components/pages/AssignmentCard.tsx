@@ -92,9 +92,7 @@ export default function AssignmentCard(props: any) {
             </CardActions>
           ) : null}
         </Card>
-        {isSubmitting && (
-          <SubmitAssignment assignment_id={assignment_id}/>
-        )}
+        {isSubmitting && <SubmitAssignment assignment_id={assignment_id} />}
       </div>
     );
 }

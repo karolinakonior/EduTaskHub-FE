@@ -11,13 +11,13 @@ import Box from '@mui/material/Box';
 
 const defaultTheme = createTheme();
 
-export default function SubmitAssignment({ assignment_id}) {
+export default function SubmitAssignment({ assignment_id} : any) {
   const [submission, setSubmission] = useState("");
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext<any>(UserContext);
 
-  const handleSubmission = (e) => {
+  const handleSubmission = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     postStudentSubmission(user.student_id, assignment_id, submission)
       .then((studentSubmission) => {

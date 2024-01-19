@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import AssignmentCard from './pages/AssignmentCard';
 import { getSubjects } from "../utils/subjects_api";
+import formattedDate from "../utils/date_format";
 
 
 export default function Assignments ({studentAssignments, setStudentAssignments}: {studentAssignments: any,setStudentAssignments: React.Dispatch<React.SetStateAction<any>>}) {
@@ -42,7 +43,7 @@ export default function Assignments ({studentAssignments, setStudentAssignments}
                 color="text.secondary"
                 gutterBottom
               >
-                Due {singleAssignment.due_date.split("T")[0]}
+                Due {formattedDate(singleAssignment.due_date).split(",")[0]}
               </Typography>
               <Typography variant="h5" component="div" gutterBottom>
                 {singleAssignment.name}
