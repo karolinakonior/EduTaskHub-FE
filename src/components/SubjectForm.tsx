@@ -14,6 +14,7 @@ import { Subject } from "../types/Subject";
 export default function SubjectForm({setStudentSubjects, studentSubjects}: {setStudentSubjects: React.Dispatch<React.SetStateAction<any>>, studentSubjects: any}) {
     const { user, setUser } = useContext<any>(UserContext);
     const [subjects, setSubjects] = useState<Subject[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getSubjects().then((subjects: Subject[]) => {
@@ -25,6 +26,7 @@ export default function SubjectForm({setStudentSubjects, studentSubjects}: {setS
             }
           }
             setSubjects(subjects);
+            setLoading(false)
         })
       }, [studentSubjects]);
     
@@ -34,6 +36,8 @@ export default function SubjectForm({setStudentSubjects, studentSubjects}: {setS
             setStudentSubjects([...studentSubjects, {subject_id: subject.subject_id, subject_name: event.target.value }])
         })
     };
+
+    if(loading) return (<div>Loading...</div>)
 
     return (
     <Box sx={{ minWidth: 120 }}>
@@ -48,7 +52,7 @@ export default function SubjectForm({setStudentSubjects, studentSubjects}: {setS
         >
             {subjects.map((singleSubject: Subject) => {
                 return (
-                    <MenuItem value={singleSubject.subject_name}>{singleSubject.subject_name}</MenuItem>
+                    <MenuItem key={singleSubject.subject_name} value={singleSubject.subject_name}>{singleSubject.subject_name}</MenuItem>
                 )
             })}
         </Select>

@@ -58,3 +58,14 @@ export const getStudentSubmissions = (student_id: string) => {
         return response.data.submissions;
     })
 }
+
+export const postStudentSubmission = (student_id: string, assignment_id: string, solution: string) => {
+    const submission = {
+        assignment_id: assignment_id,
+        solution: solution
+    }
+    return studentsAPI.post(`/${student_id}/submissions`, submission)
+    .then((response) => {
+        return response.data.submission;
+    }) 
+}

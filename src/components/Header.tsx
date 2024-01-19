@@ -154,12 +154,13 @@ function ResponsiveAppBar() {
                   <Link to="/login" style={{ textDecoration: 'none' }}>
                     <Typography
                     sx={{ my: 2, color: 'white', display: 'block' }}
-                    >Sign in
+                    >SIGN IN
                     </Typography>
                   </Link>
                 : 
                 <Button onClick={() => {
                   setUser({})
+                  localStorage.removeItem('user');
                   nav("/")
                   }}>
                   <Typography

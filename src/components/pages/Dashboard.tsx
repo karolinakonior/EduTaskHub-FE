@@ -20,6 +20,7 @@ import Copyright from '../Copyright';
 import Assignments from '../Assignments';
 import Submissions from '../Submissions';
 import { Subject } from '../../types/Subject';
+import Loader from '../Loader';
 
 const drawerWidth: number = 240;
 
@@ -57,6 +58,7 @@ export default function Dashboard() {
     const [year, setYear] = useState(0);
     const [studentSubjects, setStudentSubjects] = useState([]);
     const [studentAssignments, setStudentAssignments] = useState([]);
+    const [loading, setLoading] = useState<boolean>(true);
     const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -71,15 +73,31 @@ export default function Dashboard() {
     })
     .then(() => {
       getStudentSubjects(user.student_id).then((subjects) => {
-        setStudentSubjects(subjects)
-      })
+        setStudentSubjects(subjects);
+      });
     })
     .then(() => {
       getStudentAssignments(user.student_id).then((assignments) => {
         setStudentAssignments(assignments)
+        setLoading(false);
       })
     })
   }, []);
+
+  if(loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -93,8 +111,9 @@ export default function Dashboard() {
               justifyContent: "flex-end",
               px: [1],
             }}
+            onClick={toggleDrawer}
           >
-            <IconButton onClick={toggleDrawer}>
+            <IconButton>
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
@@ -135,12 +154,23 @@ export default function Dashboard() {
                       You are attending Year {year}.
                     </Typography>
                   )}
-                  <Typography variant="h6"sx={{ mt: 2 }}>Your subjects:</Typography>
-                  <ul>
-                    {studentSubjects.map((subject: Subject) => {
-                      return <li key={subject.subject_id}>{subject.subject_name}</li>;
-                    })}
-                  </ul>
+                  {studentSubjects.length === 0 ? null : (
+                    <Typography variant="h6" sx={{ mt: 2 }}>
+                      Your subjects:
+                    </Typography>
+                  )}
+                  {studentSubjects.length === 0 ? (
+                    <p>
+                      You have no subjects yet. Select subjects to get started
+                    </p>
+                  ) : (
+                    <ul>
+                      {studentSubjects.map((subject: Subject) => (
+                        <li key={subject.subject_id}>{subject.subject_name}</li>
+                      ))}
+                    </ul>
+                  )}
+
                   <SubjectForm
                     setStudentSubjects={setStudentSubjects}
                     studentSubjects={studentSubjects}

@@ -40,6 +40,7 @@ export default function SignIn() {
     })
     .then((student: User) => {
       setUser(student);
+      localStorage.setItem('user', JSON.stringify(student));
       nav(`/dashboard`);
     })
     .catch((error: Error) => {

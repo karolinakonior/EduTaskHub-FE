@@ -9,11 +9,15 @@ import { postStudentYear } from '../utils/users_api';
 import { UserContext } from "../context/UserContext";
 import { useContext } from 'react';
 import React from 'react';
+import Typography from '@mui/material/Typography';
+import Loader from "./Loader";
 
 export default function YearForm({setYear, year}: {setYear: React.Dispatch<React.SetStateAction<number>>, year: number}) {
   const [years, setYears] = useState([]);
   const { user, setUser } = useContext<any>(UserContext);
-
+  const [loading, setLoading] = useState<boolean>(true);
+  console.log(user, "in year")
+  
   const handleChange = (event: SelectChangeEvent) => {
     return postStudentYear(user.student_id, event.target.value.toString())
     .then(({ year }: any) => {
@@ -27,8 +31,24 @@ export default function YearForm({setYear, year}: {setYear: React.Dispatch<React
     })
   }, []);
 
+  if(loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <Box sx={{ minWidth: 120 }}>
+      <Typography sx={{ mb: 1 }}>Select a year to get started.</Typography>
       <FormControl fullWidth>
         <InputLabel id="select-year-dropdown">Year</InputLabel>
         <Select
@@ -38,11 +58,11 @@ export default function YearForm({setYear, year}: {setYear: React.Dispatch<React
           label="Year"
           onChange={handleChange}
         >
-            {years.map((singleYear: any) => {
-                return (
-                    <MenuItem value={singleYear.year_id}>{singleYear.year}</MenuItem>
-                )
-            })}
+          {years.map((singleYear: any) => {
+            return (
+              <MenuItem key={singleYear.year_id} value={singleYear.year_id}>{singleYear.year}</MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
     </Box>
