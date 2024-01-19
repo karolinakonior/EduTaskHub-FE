@@ -14,7 +14,8 @@ import Typography from '@mui/material/Typography';
 export default function YearForm({setYear, year}: {setYear: React.Dispatch<React.SetStateAction<number>>, year: number}) {
   const [years, setYears] = useState([]);
   const { user, setUser } = useContext<any>(UserContext);
-
+  console.log(user, "in year")
+  
   const handleChange = (event: SelectChangeEvent) => {
     return postStudentYear(user.student_id, event.target.value.toString())
     .then(({ year }: any) => {
@@ -42,7 +43,7 @@ export default function YearForm({setYear, year}: {setYear: React.Dispatch<React
         >
           {years.map((singleYear: any) => {
             return (
-              <MenuItem value={singleYear.year_id}>{singleYear.year}</MenuItem>
+              <MenuItem key={singleYear.year_id} value={singleYear.year_id}>{singleYear.year}</MenuItem>
             );
           })}
         </Select>

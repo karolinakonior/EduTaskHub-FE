@@ -11,6 +11,10 @@ import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
 import { getSubjects } from '../../utils/subjects_api';
 import Loader from '../Loader';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import SubmitAssignment from '../SubmitAssignment';
+
+const defaultTheme = createTheme();
 
 export default function AssignmentCard(props: any) {
     const { assignment_id } = useParams()
@@ -18,6 +22,7 @@ export default function AssignmentCard(props: any) {
     const [assignment, setAssignment] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [subjects, setSubjects] = useState<any>([]);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     useEffect(() => {
         getSingleAssignment(assignment_id).then((assignment: any) => {
@@ -32,6 +37,10 @@ export default function AssignmentCard(props: any) {
 
     }, [])
 
+    const handleClick = () => {
+      setIsSubmitting(true)
+    }
+
     const getSubjectName = (subject_id: number) => {
         for (let i = 0; i < subjects.length; i++) {
           if (subjects[i].subject_id === subject_id) {
@@ -44,7 +53,7 @@ export default function AssignmentCard(props: any) {
 
     return (
       <div>
-        <Card sx={{ minWidth: 275, m: 2, mt: 4}}>
+        <Card sx={{ minWidth: 275, m: 2, mt: 4 }}>
           <CardContent>
             <Typography
               sx={{ fontSize: 14 }}
@@ -69,17 +78,23 @@ export default function AssignmentCard(props: any) {
               {assignment.description}
             </Typography>
           </CardContent>
-          <CardActions>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mb: 2, maxWidth: 200}}
-            >
-              Submit assignment
-            </Button>
-          </CardActions>
+          {!isSubmitting ? (
+            <CardActions>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mb: 2, maxWidth: 200 }}
+                onClick={handleClick}
+              >
+                Submit assignment
+              </Button>
+            </CardActions>
+          ) : null}
         </Card>
+        {isSubmitting && (
+          <SubmitAssignment assignment_id={assignment_id}/>
+        )}
       </div>
     );
 }
