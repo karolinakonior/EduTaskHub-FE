@@ -8,6 +8,7 @@ import AssignmentCard from "./components/pages/AssignmentCard";
 import { useEffect, useContext, useState } from "react";
 import { UserContext } from "./context/UserContext";
 import Loader from "./components/Loader";
+import SubmissionCard from "./components/pages/SubmissionCard";
 
 function App() {
   const { setUser } = useContext<any>(UserContext);
@@ -54,6 +55,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/assignments/:assignment_id" element={<AssignmentCard />} />
+        <Route path="/submissions/:submission_id" element={<SubmissionCard />} />
         <Route path="/*" element={<Home />} />
       </Routes>
     </div>

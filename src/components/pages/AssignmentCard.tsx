@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSingleAssignment } from '../../utils/assignments_api'
-import { useState, useContext } from 'react';
-import { UserContext } from "../../context/UserContext";
+import { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -18,7 +17,6 @@ const defaultTheme = createTheme();
 
 export default function AssignmentCard(props: any) {
     const { assignment_id } = useParams()
-    const { user, setUser } = useContext<any>(UserContext);
     const [assignment, setAssignment] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [subjects, setSubjects] = useState<any>([]);
@@ -52,47 +50,49 @@ export default function AssignmentCard(props: any) {
     if(loading) return (<div><Loader /></div>)
 
     return (
-      <div>
-        <Card sx={{ minWidth: 275, m: 2, mt: 4 }}>
-          <CardContent>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color="text.secondary"
-              gutterBottom
-            >
-              Due {assignment.due_date.split("T")[0]}
-            </Typography>
-            <Typography variant="h5" component="div" gutterBottom>
-              {assignment.name}
-            </Typography>
-            <Typography color="text.secondary" sx={{ mb: 2 }}>
-              {getSubjectName(assignment.subject_id)}
-            </Typography>
-            <Divider />
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ mt: 2 }}
-              gutterBottom
-            >
-              {assignment.description}
-            </Typography>
-          </CardContent>
-          {!isSubmitting ? (
-            <CardActions>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mb: 2, maxWidth: 200 }}
-                onClick={handleClick}
+      <ThemeProvider theme={defaultTheme}>
+        <div>
+          <Card sx={{ minWidth: 275, m: 2, mt: 4 }}>
+            <CardContent>
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
               >
-                Submit assignment
-              </Button>
-            </CardActions>
-          ) : null}
-        </Card>
-        {isSubmitting && <SubmitAssignment assignment_id={assignment_id} />}
-      </div>
+                Due {assignment.due_date.split("T")[0]}
+              </Typography>
+              <Typography variant="h5" component="div" gutterBottom>
+                {assignment.name}
+              </Typography>
+              <Typography color="text.secondary" sx={{ mb: 2 }}>
+                {getSubjectName(assignment.subject_id)}
+              </Typography>
+              <Divider />
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ mt: 2 }}
+                gutterBottom
+              >
+                {assignment.description}
+              </Typography>
+            </CardContent>
+            {!isSubmitting ? (
+              <CardActions>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mb: 2, maxWidth: 200 }}
+                  onClick={handleClick}
+                >
+                  Submit assignment
+                </Button>
+              </CardActions>
+            ) : null}
+          </Card>
+          {isSubmitting && <SubmitAssignment assignment_id={assignment_id} />}
+        </div>
+      </ThemeProvider>
     );
 }
