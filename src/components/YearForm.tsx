@@ -16,7 +16,6 @@ export default function YearForm({setYear, year}: {setYear: React.Dispatch<React
   const [years, setYears] = useState([]);
   const { user, setUser } = useContext<any>(UserContext);
   const [loading, setLoading] = useState<boolean>(true);
-  console.log(user, "in year")
   
   const handleChange = (event: SelectChangeEvent) => {
     return postStudentYear(user.student_id, event.target.value.toString())
@@ -28,6 +27,7 @@ export default function YearForm({setYear, year}: {setYear: React.Dispatch<React
   useEffect(() => {
     getYears().then((years) => {
       setYears(years);
+      setLoading(false);
     })
   }, []);
 

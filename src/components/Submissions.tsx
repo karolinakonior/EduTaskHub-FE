@@ -1,23 +1,17 @@
-import { useEffect, useContext, useState } from "react";
+import { useContext } from "react";
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { UserContext } from "../context/UserContext";
-import { getStudentSubmissions } from '../utils/users_api';
-import { Submission } from "../types/Submission";
 import formattedDate from "../utils/date_format";
+import { Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import SubmissionCard from "./pages/SubmissionCard";
 
-export default function Submissions() {
+export default function Submissions({ submissions, setSubmissions} : {submissions: any, setSubmissions: React.Dispatch<React.SetStateAction<any>>}) {
     const { user } = useContext<any>(UserContext);
-    const [submissions, setSubmissions] = useState([]);
-
-    useEffect(() => {
-        getStudentSubmissions(user.student_id).then((result) => {
-            setSubmissions(result);
-        });
-    }, []);
 
     return (
       <>
@@ -27,7 +21,7 @@ export default function Submissions() {
           </Typography>
         ) : (
           <>
-            {submissions.map((submission: Submission) => (
+            {submissions.map((submission: any) => (
               <Card
                 key={submission.submission_id}
                 sx={{ minWidth: 275, mt: 2 }}
@@ -41,15 +35,32 @@ export default function Submissions() {
                     Submitted: {formattedDate(submission.submitted_at)}
                   </Typography>
                   <Typography variant="h5" component="div" gutterBottom>
-                    Title
+                    {submission.name}
                   </Typography>
-                  <Typography color="text.secondary">Subject</Typography>
+                  <Typography color="text.secondary">
+                    {submission.subject_name}
+                  </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Learn More</Button>
+                  <Link
+                    to={
+                      {
+                        pathname: `/submissions/${submission.submission_id}`,
+                        state: { submission: submission },
+                      } as any
+                    }
+                  >
+                    <Button size="small">Learn More</Button>
+                  </Link>
                 </CardActions>
               </Card>
             ))}
+            <Routes>
+              <Route
+                path="/submissions/:submission_id"
+                element={<SubmissionCard />}
+              />
+            </Routes>
           </>
         )}
       </>

@@ -14,7 +14,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { UserContext } from "../../context/UserContext";
 import { useContext, useState, useEffect } from 'react';
 import YearForm from '../YearForm';
-import { getStudentYear, getStudentSubjects, getStudentAssignments } from '../../utils/users_api';
+import { getStudentYear, getStudentSubjects, getStudentAssignments, getStudentSubmissions } from '../../utils/users_api';
 import SubjectForm from '../SubjectForm';
 import Copyright from '../Copyright';
 import Assignments from '../Assignments';
@@ -59,6 +59,7 @@ export default function Dashboard() {
     const [studentSubjects, setStudentSubjects] = useState([]);
     const [studentAssignments, setStudentAssignments] = useState([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [submissions, setSubmissions] = useState([]);
     const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -77,13 +78,18 @@ export default function Dashboard() {
       });
     })
     .then(() => {
-      getStudentAssignments(user.student_id).then((assignments) => {
-        setStudentAssignments(assignments)
+      getStudentSubmissions(user.student_id).then((result: any) => {
+        setSubmissions(result);
+      })
+    })
+    .then(() => {
+      getStudentAssignments(user.student_id).then((assignments: any) => {
+        setStudentAssignments(assignments as any);
         setLoading(false);
       })
     })
   }, []);
-
+ 
   if(loading) {
     return (
       <div
@@ -183,7 +189,7 @@ export default function Dashboard() {
                     Past submissions:
                   </Typography>
                   <Divider sx={{ mb: 2 }} />
-                  <Submissions />
+                  <Submissions submissions={submissions} setSubmissions={setSubmissions}/>
                 </Paper>
               </Grid>
               <Grid item xs={12} md={6} lg={6}>
@@ -202,6 +208,8 @@ export default function Dashboard() {
                   <Assignments
                     studentAssignments={studentAssignments}
                     setStudentAssignments={setStudentAssignments}
+                    submissions={submissions}
+                    setSubmissions={setSubmissions}
                   />
                 </Paper>
               </Grid>
